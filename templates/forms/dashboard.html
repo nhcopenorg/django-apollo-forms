@@ -1,0 +1,110 @@
+{% extends 'base_private.html' %}
+
+{% load i18n static %}
+{% block content-wrapper %}
+    <div id="content-wrapper">
+
+        <div class="container-fluid">
+
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="breadcrumb-item active">Dashboard</li>
+                <li class="breadcrumb-item active">Your forms</li>
+            </ol>
+            <!-- fobi/templates/fobi/generic/dashboard.html -->
+            <div class="page-header">
+                <h1>{% trans "Your forms" %}</h1>
+            </div>
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        <!-- Forms -->
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        <i class="fas fa-table"></i>
+                                        <span class="badge badge-danger">{{ form_entries.count }} Forms found</span>
+                                        <a href="{% url 'apollo_create_form_entry' %}" class="btn btn-primary">
+                                            {% trans "Create form" %}
+                                        </a>
+                                        <a href="{% url 'apollo_import_form_entry' %}" class="btn btn-primary">
+                                            {% trans "Import form" %}
+                                        </a>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dataTable"
+                                                   width="100%"
+                                                   cellspacing="0">
+                                                <thead>
+                                                <tr>
+                                                    <th>{% trans "Form" %}</th>
+                                                    <th>{% trans "Is public" %}</th>
+                                                    <th>{% trans "Is active" %}</th>
+                                                    {#<th class="col-sm-1">{% trans "Is cloneable" %}</th>#}
+                                                    <th>{% trans "Actions" %}</th>
+                                                </tr>
+                                                </thead>
+                                                <tfoot>
+                                                <tr>
+                                                    <th>{% trans "Form" %}</th>
+                                                    <th>{% trans "Is public" %}</th>
+                                                    <th>{% trans "Is active" %}</th>
+                                                    {#<th class="col-sm-1">{% trans "Is cloneable" %}</th>#}
+                                                    <th>{% trans "Actions" %}</th>
+                                                </tr>
+                                                </tfoot>
+                                                <tbody>
+                                                {% if form_entries.count > 0 %}
+                                                    {% for form_entry in form_entries %}
+                                                        <tr>
+                                                            <td>
+                                                                <a href="{% url 'apollo_view_form' form_entry.slug %}">{{ form_entry.name }}</a>
+                                                            </td>
+                                                            <td>{{ form_entry.is_public }}</td>
+                                                            <td>{{ form_entry.is_active }}</td>
+                                                            {#<td>{{ form_entry.is_cloneable }}</td>#}
+                                                            <td>
+                                                                <a class="a-apollo-table-icon"
+                                                                   href="{% url 'fobi.edit_form_entry' form_entry.pk %}"
+                                                                   title="{% trans "Edit" %}">
+                                                                    <span class="fas fw fa-edit"></span>
+                                                                </a>
+                                                                <span class="nav-divider">&nbsp;|&nbsp;</span>
+                                                                <a class="a-apollo-table-icon"
+                                                                   href="{% url 'fobi.delete_form_entry' form_entry.pk %}"
+                                                                   title="{% trans "Delete" %}">
+                                                                    <span class="fas fa-ban"></span>
+                                                                </a>
+                                                                <span class="nav-divider">&nbsp;|&nbsp;</span>
+                                                                <a class="a-apollo-table-icon"
+                                                                   href="{% url 'fobi.export_form_entry' form_entry.pk %}"
+                                                                   title="{% trans "Export" %}">
+                                                                    <span class="fas fa-fw fa-file-export"></span>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <tr>
+                                                        <td>{{ form_entries.count }} forms found!</td>
+                                                    </tr>
+                                                {% endif %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+{% endblock %}

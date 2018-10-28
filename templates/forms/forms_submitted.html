@@ -1,0 +1,130 @@
+{% extends 'base_private.html' %}
+
+{% load i18n static %}
+{% load apollo_filters %}
+{% block content-wrapper %}
+    <div id="content-wrapper">
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="breadcrumb-item active">Forms</li>
+                <li class="breadcrumb-item active">Submitted</li>
+            </ol>
+            {% if messages %}
+                {% for message in messages %}
+                    {# https://getbootstrap.com/docs/4.0/components/alerts/ #}
+                    <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <div class="page-header">
+                <h1>{% trans "Forms submitted list" %}</h1>
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        <i class="fas fa-table"></i>
+                                        <span class="badge badge-danger">{{ entries.count }} Entries found</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dataTable"
+                                                   width="100%"
+                                                   cellspacing="0">
+                                                <thead>
+                                                <tr>
+                                                    <th>{% trans "Form Name" %}</th>
+                                                    <th>{% trans "Data" %}</th>
+                                                    <th>{% trans "Date" %}</th>
+                                                    <th>{% trans "Author" %}</th>
+                                                </tr>
+                                                </thead>
+                                                <tfoot>
+                                                <tr>
+                                                    <th>{% trans "Form Name" %}</th>
+                                                    <th>{% trans "Data" %}</th>
+                                                    <th>{% trans "Date" %}</th>
+                                                    <th>{% trans "Author" %}</th>
+                                                </tr>
+                                                </tfoot>
+                                                <tbody>
+                                                {% if entries.count > 0 %}
+                                                    {% for entry in entries %}
+                                                        <tr>
+                                                            <td>
+                                                                <label>{{ entry.form_entry.name }}</label>
+                                                            </td>
+                                                            <td>
+                                                                <a class="a-apollo-table-icon" href="#" data-toggle="modal"
+                                                                   data-target="#{{ entry.form_entry.name|apollo_modal_id_format:entry.pk }}">
+                                                                    <i class="fas fa-fw fa-eye" href="#"
+                                                                       data-toggle="modal"
+                                                                       data-target="#{{ entry.form_entry.name|apollo_modal_id_format:entry.pk }}"></i>
+                                                                </a>
+                                                                {# { entry.saved_data|apollo_format_data_form|safe } #}
+                                                                {# .formatted_saved_data|safe }} #}
+                                                            </td>
+                                                            {# .saved_data|apollo_format_data_form|safe }}</td> #}
+                                                            <td>{{ entry.created }}</td>
+                                                            <td>{{ entry.user.username }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <tr>
+                                                        <td>{{ entries.count }} entries found!</td>
+                                                    </tr>
+                                                {% endif %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer small text-muted">Updated yesterday at 11:59
+                                        PM
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+{% endblock %}
+{% block modal %}
+    {% if entries.count > 0 %}
+        {% for entry in entries %}
+            <div class="modal fade" id="{{ entry.form_entry.name|apollo_modal_id_format:entry.pk }}" tabindex="-1"
+                 role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Form: {{ entry.form_entry.name }}</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="background-color: #dedede">
+                            {{ entry.saved_data|apollo_format_data_form|safe }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td>{{ entries.count }} entries found!</td>
+        </tr>
+    {% endif %}
+{% endblock %}

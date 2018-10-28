@@ -1,0 +1,35 @@
+{% extends 'base_private.html' %}
+
+{% load i18n static %}
+{% block content-wrapper %}
+    <div id="content-wrapper">
+
+        <div class="container-fluid">
+
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="breadcrumb-item active">Dashboard</li>
+                <li class="breadcrumb-item active">Your forms</li>
+            </ol>
+
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        <!-- Forms -->
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="card mb-3">
+                                    <!-- fobi/templates/fobi/generic/create_form_entry.html -->
+                                    {% include fobi_theme.create_form_entry_ajax_template %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

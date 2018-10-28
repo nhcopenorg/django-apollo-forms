@@ -1,0 +1,20 @@
+{% extends 'base_private.html' %}
+
+{% load i18n static %}
+{% block content-wrapper %}
+    <div id="content-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'apollo_forms_assigned' %}">Assigned</a>
+            </li>
+            <li class="breadcrumb-item active">Forms</li>
+            <li class="breadcrumb-item active">View</li>
+        </ol>
+        {% include fobi_theme.view_form_entry_ajax_template %}
+    </div>
+    <!-- /.content-wrapper -->
+{% endblock %}

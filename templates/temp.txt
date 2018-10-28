@@ -1,0 +1,25 @@
+{% for form in assets.forms.all %}
+                                        <div class="card-body">
+                                            <a href="{% url 'fobi.view_form_entry' form.slug %}">{{ form.name }}</a>
+                                        </div>
+                                    {% endfor %}
+                    {% for asset in object_list %}
+                        <h1>{{ asset.name }}</h1>
+                        {% for person in asset.users.all %}
+                            <h1>3</h1>
+                            {% ifequal person user %}
+                                <div class="card">
+                                    <div class="card-header">
+                                        <span class="font-weight-bold">{{ asset.name }}</span> &middot;
+                                        <span class="text-muted"> {{ asset.description }} | Project: {{ asset.project }}</span>
+                                    </div>
+                                    {% for form in asset.forms.all %}
+                                        <div class="card-body">
+                                            <a href="{% url 'fobi.view_form_entry' form.slug %}">{{ form.name }}</a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <br/>
+                            {% endifequal %}
+                        {% endfor %}
+                    {% endfor %}
